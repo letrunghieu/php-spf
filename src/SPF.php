@@ -62,7 +62,6 @@ class SPF
     public function getSPFFromDomain(string $domain): SPFRecord
     {
         $record = $this->dnsResolver->getSPFRecordForDomain($domain);
-        var_dump($record);
 
         return $this->parseSPFRecord($record);
     }
