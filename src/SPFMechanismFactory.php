@@ -36,13 +36,6 @@ class SPFMechanismFactory
     const MODIFIER_REDIRECT = 'redirect';
     const MODIFIER_EXP = 'exp';
 
-    private $supportedMechanisms;
-
-    public function __construct()
-    {
-        $this->registerSupportedMechanisms();
-    }
-
     /**
      * @param string $text
      * @param string $currentDomain
@@ -140,12 +133,5 @@ class SPFMechanismFactory
         $modifier->setValue($value);
         $modifier->validate($level);
         return $modifier;
-    }
-
-    protected function registerSupportedMechanisms()
-    {
-        $this->supportedMechanisms = [
-            new AMechanism(),
-        ];
     }
 }

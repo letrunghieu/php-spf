@@ -27,7 +27,7 @@ abstract class AbstractMechanism
     /**
      * @var string
      */
-    private $qualifier;
+    private $qualifier = "";
 
     /**
      * @var string
@@ -49,10 +49,14 @@ abstract class AbstractMechanism
 
     /**
      * @param string $qualifier
+     *
+     * @return static
      */
     public function setQualifier(string $qualifier)
     {
         $this->qualifier = $qualifier;
+
+        return $this;
     }
 
     /**
@@ -65,10 +69,14 @@ abstract class AbstractMechanism
 
     /**
      * @param string $value
+     *
+     * @return static
      */
     public function setValue(string $value)
     {
         $this->value = $value;
+
+        return $this;
     }
 
     /**
@@ -81,10 +89,14 @@ abstract class AbstractMechanism
 
     /**
      * @param string $option
+     *
+     * @return static
      */
     public function setOption(string $option)
     {
         $this->option = $option;
+
+        return $this;
     }
 
     public function getOperand(): string

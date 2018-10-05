@@ -12,6 +12,7 @@ namespace HieuLe\PhpSPF;
 use HieuLe\PhpSPF\Common\DNSResolverInterface;
 use HieuLe\PhpSPF\Common\IPResolverInterface;
 use HieuLe\PhpSPF\Exceptions\DNSResolutionException;
+use HieuLe\PhpSPF\Mechanisms\AbstractMechanism;
 
 class SPF
 {
@@ -37,9 +38,10 @@ class SPF
 
     /**
      * SPF constructor.
+     *
      * @param DNSResolverInterface $dnsResolver
-     * @param IPResolverInterface $ipResolver
-     * @param Level $level
+     * @param IPResolverInterface  $ipResolver
+     * @param Level                $level
      */
     public function __construct(DNSResolverInterface $dnsResolver, IPResolverInterface $ipResolver, Level $level)
     {
@@ -77,17 +79,17 @@ class SPF
         $recordParts = explode(" ", $record);
         array_shift($recordParts); // Remove first part (v=spf1)
 
-        // If the spf record is empty, the default mechanism is '?all'
-        if (count($recordParts) == 0) {
-            $recordParts = ['?all'];
-        }
-
         foreach ($recordParts as $part) {
-            $mechanism = $this->mechanismFactory->make($part, "", $this->level);
+            $mechanism = $this->buildSPFPart($part);
 
             $spfRecord->addMechanism($mechanism);
         }
 
         return $spfRecord;
+    }
+
+    public function buildSPFPart(string $text): AbstractMechanism
+    {
+        return $this->mechanismFactory->make($text, "", $this->level);
     }
 }
