@@ -13,22 +13,16 @@ use HieuLe\PhpSPF\Level;
 
 class MxMechanism extends AbstractMechanism
 {
-
-    /**
-     * @param string $text
-     * @param Level  $level
-     *
-     */
-    public function fromText(string $text, Level $level)
-    {
-        // TODO: Implement fromText() method.
-    }
-
     /**
      * @return string
      */
     public function getName(): string
     {
         return "mx";
+    }
+
+    public function validate(Level $level)
+    {
+        $this->validatePrefixLength($this->getOption(), $level);
     }
 }

@@ -13,22 +13,16 @@ use HieuLe\PhpSPF\Level;
 
 class IncludeMechanism extends AbstractMechanism
 {
-
-    /**
-     * @param string $text
-     * @param Level  $level
-     *
-     */
-    public function fromText(string $text, Level $level)
-    {
-        // TODO: Implement fromText() method.
-    }
-
     /**
      * @return string
      */
     public function getName(): string
     {
         return "include";
+    }
+
+    public function validate(Level $level)
+    {
+        $this->validateOptionDoesNotExist();
     }
 }

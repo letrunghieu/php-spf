@@ -31,8 +31,8 @@ class NotSupportedModifier extends AbstractModifier
         return $this->name;
     }
 
-    public function fromText(string $text, Level $level)
+    public function validate(Level $level)
     {
-        $this->setValue($text);
+        // TODO: Implement validate() method.
     }
 }

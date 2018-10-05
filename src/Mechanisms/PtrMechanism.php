@@ -13,22 +13,16 @@ use HieuLe\PhpSPF\Level;
 
 class PtrMechanism extends AbstractMechanism
 {
-
-    /**
-     * @param string $text
-     * @param Level  $level
-     *
-     */
-    public function fromText(string $text, Level $level)
-    {
-        // TODO: Implement fromText() method.
-    }
-
     /**
      * @return string
      */
     public function getName(): string
     {
         return "ptr";
+    }
+
+    public function validate(Level $level)
+    {
+        $this->validateOptionDoesNotExist();
     }
 }

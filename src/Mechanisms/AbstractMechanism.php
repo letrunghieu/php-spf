@@ -9,6 +9,7 @@
 namespace HieuLe\PhpSPF\Mechanisms;
 
 
+use HieuLe\PhpSPF\Exceptions\InvalidMechanismException;
 use HieuLe\PhpSPF\Level;
 
 abstract class AbstractMechanism
@@ -86,6 +87,17 @@ abstract class AbstractMechanism
         $this->option = $option;
     }
 
+    public function getOperand(): string
+    {
+        $value = $this->getValue();
+        $option = $this->getOption();
+        if ($option) {
+            $value = "{$value}/{$option}";
+        }
+
+        return $value;
+    }
+
     public function getText(): string
     {
         $text = $this->getName();
@@ -109,15 +121,42 @@ abstract class AbstractMechanism
         return "{$qualifier}{$text}";
     }
 
-    /**
-     * @param string $text
-     * @param Level  $level
-     *
-     */
-    public abstract function fromText(string $text, Level $level);
+    public abstract function validate(Level $level);
 
     /**
      * @return string
      */
     public abstract function getName(): string;
+
+    protected function throwInvalidValue(string $reason = "")
+    {
+        $name = $this->getName();
+        $value = $this->getOperand();
+
+        $message = "Invalid value [{$value}] for mechanism [{$name}]";
+        if ($reason) {
+            $message .= " Reason: {$reason}";
+        }
+
+        throw new InvalidMechanismException($message);
+    }
+
+    protected function validatePrefixLength($option, Level $level)
+    {
+
+    }
+
+    protected function validateValueIsRequired()
+    {
+        if (!$this->getValue()) {
+            $this->throwInvalidValue("value is required");
+        }
+    }
+
+    protected function validateOptionDoesNotExist()
+    {
+        if ($this->getOption()) {
+            $this->throwInvalidValue("option must be empty");
+        }
+    }
 }

@@ -13,20 +13,16 @@ use HieuLe\PhpSPF\Level;
 
 class AMechanism extends AbstractMechanism
 {
-
-    /**
-     * @inheritdoc
-     */
-    function fromText(string $text, Level $level)
-    {
-        // TODO: Implement fromText() method.
-    }
-
     /**
      * @return string
      */
     public function getName(): string
     {
         return "a";
+    }
+
+    public function validate(Level $level)
+    {
+        $this->validatePrefixLength($this->getOption(), $level);
     }
 }

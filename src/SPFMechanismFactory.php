@@ -19,7 +19,9 @@ use HieuLe\PhpSPF\Mechanisms\Ip4Mechanism;
 use HieuLe\PhpSPF\Mechanisms\Ip6Mechanism;
 use HieuLe\PhpSPF\Mechanisms\MxMechanism;
 use HieuLe\PhpSPF\Modifiers\AbstractModifier;
+use HieuLe\PhpSPF\Modifiers\ExpModifier;
 use HieuLe\PhpSPF\Modifiers\NotSupportedModifier;
+use HieuLe\PhpSPF\Modifiers\RedirectModifier;
 
 class SPFMechanismFactory
 {
@@ -68,28 +70,13 @@ class SPFMechanismFactory
         }
 
         $matches = null;
-        if (!preg_match('/^(?<name>[a-z]+)(?<value>(?::[^:]+)?(?:\/\d+)?)$/m', $condition, $matches)) {
+        if (!preg_match('/^(?<name>[a-z]+)(?:\:(?<value>[^\/]+))?(?:\/(?<option>\d+))?$/m', $condition, $matches)) {
             throw new InvalidMechanismException("[$text] is not a supported mechanism");
         }
 
         $mechanism = $matches['name'];
-        $operand = $matches['value'];
-
-        // some mechanism accept empty value, the $operand will be set to the current domain
-        switch ($mechanism) {
-            case self::MECHANISM_A:
-            case self::MECHANISM_MX:
-            case self::MECHANISM_PTR:
-
-                if (!$operand) {
-                    $operand = $currentDomain;
-                }
-
-                break;
-
-            default:
-                $operand = "";
-        }
+        $value = isset($matches['value']) ? $matches['value'] : "";
+        $option = isset($matches['option']) ? $matches['option'] : "";
 
         switch ($mechanism) {
             case self::MECHANISM_ALL:
@@ -128,7 +115,9 @@ class SPFMechanismFactory
                 throw new InvalidMechanismException("[$text] is not a supported mechanism");
         }
 
-        $mech->fromText($operand, $level);
+        $mech->setValue($value);
+        $mech->setOption($option);
+        $mech->validate($level);
         $mech->setQualifier($qualifier);
         return $mech;
     }
@@ -136,11 +125,20 @@ class SPFMechanismFactory
     protected function createModifier(string $name, string $value, Level $level): AbstractModifier
     {
         switch ($name) {
+            case self::MODIFIER_EXP:
+                $modifier = new ExpModifier();
+                break;
+
+            case self::MODIFIER_REDIRECT:
+                $modifier = new RedirectModifier();
+                break;
+
             default:
                 $modifier = new NotSupportedModifier($name);
         }
 
-        $modifier->fromText($value, $level);
+        $modifier->setValue($value);
+        $modifier->validate($level);
         return $modifier;
     }
 

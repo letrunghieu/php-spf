@@ -13,22 +13,17 @@ use HieuLe\PhpSPF\Level;
 
 class Ip4Mechanism extends AbstractMechanism
 {
-
-    /**
-     * @param string $text
-     * @param Level $level
-     *
-     */
-    public function fromText(string $text, Level $level)
-    {
-        // TODO: Implement fromText() method.
-    }
-
     /**
      * @return string
      */
     public function getName(): string
     {
         return "ip4";
+    }
+
+    public function validate(Level $level)
+    {
+        $this->validateValueIsRequired();
+        $this->validatePrefixLength($this->getOption(), $level);
     }
 }
