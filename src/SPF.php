@@ -83,7 +83,7 @@ class SPF
         }
 
         foreach ($recordParts as $part) {
-            $mechanism = $this->mechanismFactory->make($part);
+            $mechanism = $this->mechanismFactory->make($part, "", $this->level);
 
             $spfRecord->addMechanism($mechanism);
         }

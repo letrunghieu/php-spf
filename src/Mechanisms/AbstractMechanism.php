@@ -18,17 +18,6 @@ abstract class AbstractMechanism
     const RESULT_SOFTFAIL = '~';
     const RESULT_NEUTRAL = '?';
 
-    const MECHANISM_ALL = 'all';
-    const MECHANISM_IP4 = 'ip4';
-    const MECHANISM_IP6 = 'ip6';
-    const MECHANISM_A = 'a';
-    const MECHANISM_MX = 'mx';
-    const MECHANISM_PTR = 'ptr';
-    const MECHANISM_EXISTS = 'exists';
-    const MECHANISM_INCLUDE = 'include';
-    const MODIFIER_REDIRECT = 'redirect';
-    const MODIFIER_EXP = 'exp';
-
     public static function getValidModifiers(): array
     {
         return [self::RESULT_PASS, self::RESULT_FAIL, self::RESULT_SOFTFAIL, self::RESULT_NEUTRAL];
@@ -38,6 +27,16 @@ abstract class AbstractMechanism
      * @var string
      */
     private $qualifier;
+
+    /**
+     * @var string
+     */
+    private $value = "";
+
+    /**
+     * @var string
+     */
+    private $option = "";
 
     /**
      * @return string
@@ -55,11 +54,70 @@ abstract class AbstractMechanism
         $this->qualifier = $qualifier;
     }
 
+    /**
+     * @return string
+     */
+    public function getValue(): string
+    {
+        return $this->value;
+    }
+
+    /**
+     * @param string $value
+     */
+    public function setValue(string $value)
+    {
+        $this->value = $value;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOption(): string
+    {
+        return $this->option;
+    }
+
+    /**
+     * @param string $option
+     */
+    public function setOption(string $option)
+    {
+        $this->option = $option;
+    }
+
+    public function getText(): string
+    {
+        $text = $this->getName();
+
+        if ($this->getQualifier() === AbstractMechanism::RESULT_PASS) {
+            $qualifier = "";
+        } else {
+            $qualifier = $this->getQualifier();
+        }
+
+        $value = $this->getValue();
+        if ($value) {
+            $text .= ":{$value}";
+        }
+
+        $option = $this->getOption();
+        if ($option) {
+            $text .= "/{$option}";
+        }
+
+        return "{$qualifier}{$text}";
+    }
 
     /**
      * @param string $text
-     * @param Level $level
+     * @param Level  $level
      *
      */
     public abstract function fromText(string $text, Level $level);
+
+    /**
+     * @return string
+     */
+    public abstract function getName(): string;
 }

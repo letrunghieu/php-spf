@@ -2,8 +2,8 @@
 /**
  * Created by PhpStorm.
  * User: hieul
- * Date: 10/5/2018
- * Time: 8:04 AM
+ * Date: 10/5/18
+ * Time: 9:56 AM
  */
 
 namespace HieuLe\PhpSPF\Mechanisms;
@@ -11,13 +11,15 @@ namespace HieuLe\PhpSPF\Mechanisms;
 
 use HieuLe\PhpSPF\Level;
 
-class AMechanism extends AbstractMechanism
+class Ip6Mechanism extends AbstractMechanism
 {
 
     /**
-     * @inheritdoc
+     * @param string $text
+     * @param Level  $level
+     *
      */
-    function fromText(string $text, Level $level)
+    public function fromText(string $text, Level $level)
     {
         // TODO: Implement fromText() method.
     }
@@ -27,6 +29,6 @@ class AMechanism extends AbstractMechanism
      */
     public function getName(): string
     {
-        return "a";
+        return "ip6";
     }
 }

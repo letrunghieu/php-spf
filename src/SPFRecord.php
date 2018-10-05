@@ -13,10 +13,21 @@ use HieuLe\PhpSPF\Mechanisms\AbstractMechanism;
 
 class SPFRecord
 {
-    private $mechanism = [];
+    private $mechanisms = [];
 
     public function addMechanism(AbstractMechanism $mechanism)
     {
-        $this->mechanism[] = $mechanism;
+        $this->mechanisms[] = $mechanism;
+    }
+
+    public function getText()
+    {
+        $mechanisms = array_map(function (AbstractMechanism $mechanism) {
+            return $mechanism->getText();
+        }, $this->mechanisms);
+
+        $valueText = implode(" ", $mechanisms);
+
+        return "v=spf1" . ($valueText ? " {$valueText}" : "");
     }
 }

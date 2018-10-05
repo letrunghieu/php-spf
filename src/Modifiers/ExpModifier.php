@@ -2,33 +2,30 @@
 /**
  * Created by PhpStorm.
  * User: hieul
- * Date: 10/5/2018
- * Time: 8:49 AM
+ * Date: 10/5/18
+ * Time: 10:10 AM
  */
 
-namespace HieuLe\PhpSPF\Mechanisms;
+namespace HieuLe\PhpSPF\Modifiers;
 
 
 use HieuLe\PhpSPF\Level;
 
-class Ip4Mechanism extends AbstractMechanism
+class ExpModifier extends AbstractModifier
 {
 
     /**
      * @param string $text
-     * @param Level $level
+     * @param Level  $level
      *
      */
     public function fromText(string $text, Level $level)
     {
-        // TODO: Implement fromText() method.
+        $this->setValue($text);
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
-        return "ip4";
+        return "exp";
     }
 }

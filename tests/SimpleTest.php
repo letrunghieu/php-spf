@@ -15,6 +15,8 @@ use PHPUnit\Framework\TestCase;
 class SimpleTest extends TestCase
 {
     public function testSimeple() {
-        SPFBuilder::init()->make()->getSPFFromDomain("resales-online.com");
+        $record = SPFBuilder::init()->make()->parseSPFRecord("v=spf1 a mx/24 redirect=foo.com -all");
+
+        var_dump($record, $record->getText());
     }
 }
