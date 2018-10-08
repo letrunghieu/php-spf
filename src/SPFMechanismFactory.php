@@ -63,7 +63,7 @@ class SPFMechanismFactory
         }
 
         $matches = null;
-        if (!preg_match('/^(?<name>[a-z]+)(?:\:(?<value>[^\/]+))?(?:\/(?<option>\d+))?$/m', $condition, $matches)) {
+        if (!preg_match('/^(?<name>[a-z0-9]+)(?:\:(?<value>[^\/]+))?(?:\/(?<option>\d+))?$/m', $condition, $matches)) {
             throw new InvalidMechanismException("[$text] is not a supported mechanism");
         }
 

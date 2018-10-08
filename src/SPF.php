@@ -93,7 +93,6 @@ class SPF
         return $this->mechanismFactory->make($text, "", $this->level);
     }
 
-
     /**
      * If a domain is included in an SPF record
      *

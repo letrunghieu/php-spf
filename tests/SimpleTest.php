@@ -17,11 +17,12 @@ class SimpleTest extends TestCase
 {
     public function testSimple()
     {
-        $record = SPFBuilder::init()->make()->parseSPFRecord("v=spf1 a mx/24 redirect=foo.com -all");
+//        $record = SPFBuilder::init()->make()->parseSPFRecord("v=spf1 a mx/24 redirect=foo.com -all");
+        $record = SPFBuilder::init()->make()->parseSPFRecord("v=spf1 ip4:157.55.9.128/25");
 
-        $mech = new IncludeMechanism();
-        $mech->setValue('rso.com');
-        $record->addMechanismNicely($mech);
+//        $mech = new IncludeMechanism();
+//        $mech->setValue('rso.com');
+//        $record->addMechanismNicely($mech);
 
         var_dump($record, $record->getText());
     }
