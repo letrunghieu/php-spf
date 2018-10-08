@@ -13,6 +13,7 @@ use HieuLe\PhpSPF\Common\DNSResolverInterface;
 use HieuLe\PhpSPF\Common\IPResolverInterface;
 use HieuLe\PhpSPF\Exceptions\DNSResolutionException;
 use HieuLe\PhpSPF\Mechanisms\AbstractMechanism;
+use HieuLe\PhpSPF\Mechanisms\IncludeMechanism;
 
 class SPF
 {
@@ -90,5 +91,24 @@ class SPF
     public function buildSPFPart(string $text): AbstractMechanism
     {
         return $this->mechanismFactory->make($text, "", $this->level);
+    }
+
+
+    /**
+     * If a domain is included in an SPF record
+     *
+     * @param SPFRecord $spfRecord
+     * @param string    $domain
+     *
+     * @return bool
+     */
+    public function isDomainIncluded(SPFRecord $spfRecord, string $domain): bool
+    {
+        foreach ($spfRecord->getMechanisms() as $mechanism) {
+            if (($mechanism instanceof IncludeMechanism) && $mechanism->getValue() === $domain) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -63,23 +63,6 @@ class SPFRecord
         return $this;
     }
 
-    /**
-     * If a domain is included in an SPF record
-     *
-     * @param string $domain
-     *
-     * @return bool
-     */
-    public function isDomainIncluded(string $domain): bool
-    {
-        foreach ($this->mechanisms as $mechanism) {
-            if (($mechanism instanceof IncludeMechanism) && $mechanism->getValue() === $domain) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public function getText()
     {
         $mechanisms = array_map(function (AbstractMechanism $mechanism) {
