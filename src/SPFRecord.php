@@ -11,21 +11,42 @@ namespace HieuLe\PhpSPF;
 
 use HieuLe\PhpSPF\Mechanisms\AbstractMechanism;
 use HieuLe\PhpSPF\Mechanisms\AllMechanism;
+use HieuLe\PhpSPF\Mechanisms\IncludeMechanism;
 
 class SPFRecord
 {
     private $mechanisms = [];
 
+    /**
+     * @param AbstractMechanism $mechanism
+     *
+     * @return $this
+     */
     public function addMechanism(AbstractMechanism $mechanism)
     {
         $this->mechanisms[] = $mechanism;
+
+        return $this;
     }
 
-    public function addMechanismNicely(AbstractMechanism $mechanism)
+    /**
+     * @return array
+     */
+    public function getMechanisms(): array
+    {
+        return $this->mechanisms;
+    }
+
+    /**
+     * @param AbstractMechanism $mechanism
+     *
+     * @return SPFRecord
+     */
+    public function addMechanismNicely(AbstractMechanism $mechanism): SPFRecord
     {
         if (empty($this->mechanisms)) {
             $this->mechanisms = [$mechanism];
-            return;
+            return $this;
         }
 
         // Find tha last mechanism that is not 'all', then insert the new mechanism after it
@@ -38,6 +59,25 @@ class SPFRecord
         }
 
         array_splice($this->mechanisms, $lastIndex, 0, [$mechanism]);
+
+        return $this;
+    }
+
+    /**
+     * If a domain is included in an SPF record
+     *
+     * @param string $domain
+     *
+     * @return bool
+     */
+    public function isDomainIncluded(string $domain): bool
+    {
+        foreach ($this->mechanisms as $mechanism) {
+            if (($mechanism instanceof IncludeMechanism) && $mechanism->getValue() === $domain) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public function getText()
